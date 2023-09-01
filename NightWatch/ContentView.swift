@@ -8,75 +8,53 @@
 import SwiftUI
 
 struct ContentView: View {
+    var nightlyTasks:[String] = [
+        "Check all windows",
+        "Check all doors",
+        "Check that the safe is locked",
+        "Check the mailbox",
+        "Inspect security cameras",
+        "Clear ice from sidewalks",
+        "Document \"strange and unusual\" occurences"]
+    
+    var weeklyTasks:[String] = [
+        "Check inside all vacant rooms",
+        "Walk the perimeter of the property"]
+    
+    var monthlyTasks:[String] = [
+        "Test security alarms",
+        "Test smoke alarms"]
+    
     var body: some View {
-        VStack (alignment: .leading) {
-            HStack {
-                VStack (alignment: .leading) {
-                    //MARK: Nightly Tasks
-                    Group {
-                    HStack {
-                            Text(Image(systemName: "cloud.moon"))
-                                .foregroundColor(.yellow)
-                                .font(.title3)
-                                .fontWeight(.heavy)
-                            Text("Nightly Tasks")
-                                .underline()
-                                .font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/)
-                                .fontWeight(.heavy)
-                                .foregroundColor(/*@START_MENU_TOKEN@*/.yellow/*@END_MENU_TOKEN@*/)
-                                .padding(.top)
-                            .textCase(.uppercase)
-                        }
-                        Text("- Check all windows")
-                        Text("- Check all doors")
-                        Text("- Check that the safe is locked")
-                        Text("- Check the mailbox")
-                        Text("- Inspect security cameras")
-                        Text("- Clear ice from sidewalks")
-                        Text("- Document \"strange and unusual\" occurences")
-                        Divider()
-                        //MARK: Weekly Tasks
-                        HStack {
-                            Text(Image(systemName: "calendar.day.timeline.left"))
-                                .foregroundColor(.yellow)
-                                .font(.title3)
-                                .fontWeight(.heavy)
-                            Text("Weekly Tasks")
-                                .underline()
-                                .font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/)
-                                .fontWeight(.heavy)
-                                .foregroundColor(/*@START_MENU_TOKEN@*/.yellow/*@END_MENU_TOKEN@*/)
-                                .padding(.top)
-                            .textCase(.uppercase)
-                        }
-                    }
-                    Text("- Check inside all vacant rooms")
-                    Text("- Walk the perimeter of the property")
-                    Divider()
-                    //MARK: Monthly Tasks
-                    HStack {
-                        Text(Image(systemName: "calendar"))
-                            .foregroundColor(.yellow)
-                            .font(.title3)
-                            .fontWeight(.heavy)
-                        
-                        Text("Monthly Tasks")
-                            .underline()
-                            .font(/*@START_MENU_TOKEN@*/.title3/*@END_MENU_TOKEN@*/)
-                            .fontWeight(.heavy)
-                            .foregroundColor(/*@START_MENU_TOKEN@*/.yellow/*@END_MENU_TOKEN@*/)
-                            .padding(.top)
-                        .textCase(.uppercase)
-                    }
-                    Text("- Test security alarms")
-                    Text("- Test smoke alarms")
-                }
-                .foregroundColor(.gray)
-                Spacer()
+        List {
+            Section (header: HStack {
+                Image(systemName: "cloud.moon")
+                Text("Nightly Tasks")
+            }.font(.title3)) {
+                ForEach (nightlyTasks, id: \.self, content: {
+                    task in
+                    Text(task)
+                })
             }
-            .padding([.top, .leading])
-            Spacer()
-        }
+            Section (header: HStack {
+                Image(systemName: "sunset")
+                Text("Weekly Tasks")
+            }.font(.title3)) {
+                ForEach (weeklyTasks, id: \.self, content: {
+                    task in
+                    Text(task)
+                })
+            }
+            Section (header: HStack {
+                Image(systemName: "calendar")
+                Text("Monthly Tasks")
+            }.font(.title3)) {
+                ForEach (monthlyTasks, id: \.self, content: {
+                    task in
+                    Text(task)
+                })
+            }
+        }.listStyle(GroupedListStyle())
     }
 }
 
