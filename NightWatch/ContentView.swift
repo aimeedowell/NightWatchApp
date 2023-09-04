@@ -26,35 +26,28 @@ struct ContentView: View {
         "Test smoke alarms"]
     
     var body: some View {
-        List {
-            Section (header: HStack {
-                Image(systemName: "cloud.moon")
-                Text("Nightly Tasks")
-            }.font(.title3)) {
-                ForEach (nightlyTasks, id: \.self, content: {
-                    task in
-                    Text(task)
-                })
-            }
-            Section (header: HStack {
-                Image(systemName: "sunset")
-                Text("Weekly Tasks")
-            }.font(.title3)) {
-                ForEach (weeklyTasks, id: \.self, content: {
-                    task in
-                    Text(task)
-                })
-            }
-            Section (header: HStack {
-                Image(systemName: "calendar")
-                Text("Monthly Tasks")
-            }.font(.title3)) {
-                ForEach (monthlyTasks, id: \.self, content: {
-                    task in
-                    Text(task)
-                })
-            }
-        }.listStyle(GroupedListStyle())
+        NavigationView {
+            List {
+                Section (header: TaskSectionHeader(symbolName: "cloud.moon", headerText: "Nightly Tasks")) {
+                    ForEach (nightlyTasks, id: \.self, content: {
+                        task in
+                        NavigationLink(task, destination: DetailsView(taskText: task))
+                    })
+                }
+                Section (header: TaskSectionHeader(symbolName: "sunset", headerText: "Weekly Tasks")) {
+                    ForEach (weeklyTasks, id: \.self, content: {
+                        task in
+                        NavigationLink(task, destination: DetailsView(taskText: task))
+                    })
+                }
+                Section (header: TaskSectionHeader(symbolName: "calendar", headerText: "Monthly Tasks")) {
+                    ForEach (monthlyTasks, id: \.self, content: {
+                        task in
+                        NavigationLink(task, destination: DetailsView(taskText: task))
+                    })
+                }
+            }.listStyle(GroupedListStyle()).navigationTitle("All Tasks")
+        }
     }
 }
 
@@ -63,3 +56,15 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
+struct TaskSectionHeader: View {
+    let symbolName: String
+    let headerText: String
+    var body: some View {
+        HStack {
+            Image(systemName: symbolName)
+            Text(headerText)
+        }.font(.title3)
+    }
+}
+
