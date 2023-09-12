@@ -8,42 +8,45 @@
 import SwiftUI
 
 struct ContentView: View {
-    var nightlyTasks:[String] = [
-        "Check all windows",
-        "Check all doors",
-        "Check that the safe is locked",
-        "Check the mailbox",
-        "Inspect security cameras",
-        "Clear ice from sidewalks",
-        "Document \"strange and unusual\" occurences"]
+    var nightlyTasks:[Task] = [
+        Task(name: "Check all windows", isComplete: false, lastCompleted: nil),
+        Task(name: "Check all doors", isComplete: false, lastCompleted: nil),
+        Task(name: "Check that the safe is locked", isComplete: false, lastCompleted: nil),
+        Task(name: "Check the mailbox", isComplete: false, lastCompleted: nil),
+        Task(name: "Inspect security cameras", isComplete: false, lastCompleted: nil),
+        Task(name: "Clear ice from sidewalks", isComplete: false, lastCompleted: nil),
+        Task(name: "Document \"strange and unusual\" occurences", isComplete: false, lastCompleted: nil)
+    ]
     
-    var weeklyTasks:[String] = [
-        "Check inside all vacant rooms",
-        "Walk the perimeter of the property"]
+    var weeklyTasks:[Task] = [
+        Task(name: "Check inside all vacant rooms", isComplete: false, lastCompleted: nil),
+        Task(name: "Walk the perimeter of the property", isComplete: false, lastCompleted: nil)
+    ]
     
-    var monthlyTasks:[String] = [
-        "Test security alarms",
-        "Test smoke alarms"]
+    var monthlyTasks:[Task] = [
+        Task(name: "Test security alarms", isComplete: false, lastCompleted: nil),
+        Task(name: "Test smoke alarms", isComplete: false, lastCompleted: nil)
+    ]
     
     var body: some View {
         NavigationView {
             List {
                 Section (header: TaskSectionHeader(symbolName: "cloud.moon", headerText: "Nightly Tasks")) {
-                    ForEach (nightlyTasks, id: \.self, content: {
+                    ForEach (nightlyTasks, content: {
                         task in
-                        NavigationLink(task, destination: DetailsView(taskText: task))
+                        NavigationLink(task.name, destination: DetailsView(task: task))
                     })
                 }
                 Section (header: TaskSectionHeader(symbolName: "sunset", headerText: "Weekly Tasks")) {
-                    ForEach (weeklyTasks, id: \.self, content: {
+                    ForEach (weeklyTasks, content: {
                         task in
-                        NavigationLink(task, destination: DetailsView(taskText: task))
+                        NavigationLink(task.name, destination: DetailsView(task: task))
                     })
                 }
                 Section (header: TaskSectionHeader(symbolName: "calendar", headerText: "Monthly Tasks")) {
-                    ForEach (monthlyTasks, id: \.self, content: {
+                    ForEach (monthlyTasks, content: {
                         task in
-                        NavigationLink(task, destination: DetailsView(taskText: task))
+                        NavigationLink(task.name, destination: DetailsView(task: task))
                     })
                 }
             }.listStyle(GroupedListStyle()).navigationTitle("All Tasks")
