@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var nightWatchTasks: NightWatchTasks
+    @State private var focusModeOn = false
     
     var body: some View {
         let nightWatchBindingWrapper = $nightWatchTasks
@@ -24,11 +25,14 @@ struct ContentView: View {
                     ForEach (taskIndexPairs, id: \.0.id, content: {
                         task, taskIndex in
                         let tasksBinding = nightWatchBindingWrapper.nightlyTasks
-                        NavigationLink(
-                            destination: DetailsView(task: tasksBinding[taskIndex]),
-                            label: {
-                                TaskRow(task: task)
-                            })
+                        if focusModeOn == false || (focusModeOn && task.isComplete == false)
+                        {
+                            NavigationLink(
+                                destination: DetailsView(task: tasksBinding[taskIndex]),
+                                label: {
+                                    TaskRow(task: task)
+                                })
+                        }
                     })
                 }
                 Section (header: TaskSectionHeader(symbolName: "sunset", headerText: "Weekly Tasks")) {
@@ -39,11 +43,14 @@ struct ContentView: View {
                     ForEach (taskIndexPairs, id: \.0.id, content: {
                         task, taskIndex in
                         let tasksBinding = nightWatchBindingWrapper.weeklyTasks
-                        NavigationLink(
-                            destination: DetailsView(task: tasksBinding[taskIndex]),
-                            label: {
-                                TaskRow(task: task)
-                            })
+                        if focusModeOn == false || (focusModeOn && task.isComplete == false)
+                        {
+                            NavigationLink(
+                                destination: DetailsView(task: tasksBinding[taskIndex]),
+                                label: {
+                                    TaskRow(task: task)
+                                })
+                        }
                     })
                 }
                 Section (header: TaskSectionHeader(symbolName: "calendar", headerText: "Monthly Tasks")) {
@@ -54,14 +61,27 @@ struct ContentView: View {
                     ForEach (taskIndexPairs, id: \.0.id, content: {
                         task, taskIndex in
                         let tasksBinding = nightWatchBindingWrapper.monthlyTasks
-                        NavigationLink(
-                            destination: DetailsView(task: tasksBinding[taskIndex]),
-                            label: {
-                                TaskRow(task: task)
-                            })
+                        if focusModeOn == false || (focusModeOn && task.isComplete == false)
+                        {
+                            NavigationLink(
+                                destination: DetailsView(task: tasksBinding[taskIndex]),
+                                label: {
+                                    TaskRow(task: task)
+                                })
+                        }
                     })
                 }
-            }.listStyle(GroupedListStyle()).navigationTitle("All Tasks")
+            }
+            .listStyle(GroupedListStyle())
+            .navigationTitle("All Tasks")
+            .toolbar {
+                ToolbarItem (placement: .bottomBar) {
+                    Toggle(isOn: $focusModeOn, label: {
+                        Text("Focus Mode")
+                    }).toggleStyle(.switch)
+                }
+
+            }
         }
     }
 }
