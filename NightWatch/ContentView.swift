@@ -12,6 +12,8 @@ struct ContentView: View {
     @ObservedObject var nightWatchTasks: NightWatchTasks
     
     var body: some View {
+        let nightWatchBindingWrapper = $nightWatchTasks
+        
         NavigationView {
             List {
                 Section (header: TaskSectionHeader(symbolName: "cloud.moon", headerText: "Nightly Tasks")) {
@@ -21,7 +23,6 @@ struct ContentView: View {
                     
                     ForEach (taskIndexPairs, id: \.0.id, content: {
                         task, taskIndex in
-                        let nightWatchBindingWrapper = $nightWatchTasks
                         let tasksBinding = nightWatchBindingWrapper.nightlyTasks
                         NavigationLink(
                             destination: DetailsView(task: tasksBinding[taskIndex]),
@@ -37,7 +38,6 @@ struct ContentView: View {
                     
                     ForEach (taskIndexPairs, id: \.0.id, content: {
                         task, taskIndex in
-                        let nightWatchBindingWrapper = $nightWatchTasks
                         let tasksBinding = nightWatchBindingWrapper.weeklyTasks
                         NavigationLink(
                             destination: DetailsView(task: tasksBinding[taskIndex]),
@@ -53,7 +53,6 @@ struct ContentView: View {
                     
                     ForEach (taskIndexPairs, id: \.0.id, content: {
                         task, taskIndex in
-                        let nightWatchBindingWrapper = $nightWatchTasks
                         let tasksBinding = nightWatchBindingWrapper.monthlyTasks
                         NavigationLink(
                             destination: DetailsView(task: tasksBinding[taskIndex]),
