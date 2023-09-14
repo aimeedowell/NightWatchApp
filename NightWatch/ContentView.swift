@@ -11,6 +11,7 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var nightWatchTasks: NightWatchTasks
     @State private var focusModeOn = false
+    @State private var resetAlertShowing = false
     
     var body: some View {
         let nightWatchBindingWrapper = $nightWatchTasks
@@ -44,7 +45,7 @@ struct ContentView: View {
                     let taskIndices = nightWatchTasks.nightlyTasks.indices
                     let tasks = nightWatchTasks.weeklyTasks
                     let taskIndexPairs = Array(zip(tasks, taskIndices))
-                    
+
                     ForEach (taskIndexPairs, id: \.0.id, content: {
                         task, taskIndex in
                         let tasksBinding = nightWatchBindingWrapper.weeklyTasks
@@ -68,7 +69,7 @@ struct ContentView: View {
                     let taskIndices = nightWatchTasks.nightlyTasks.indices
                     let tasks = nightWatchTasks.monthlyTasks
                     let taskIndexPairs = Array(zip(tasks, taskIndices))
-                    
+
                     ForEach (taskIndexPairs, id: \.0.id, content: {
                         task, taskIndex in
                         let tasksBinding = nightWatchBindingWrapper.monthlyTasks
@@ -96,10 +97,7 @@ struct ContentView: View {
                 }
                 ToolbarItem (placement: .navigationBarTrailing) {
                     Button("Reset") {
-                        let refreshedNightWatchTasks = NightWatchTasks()
-                        self.nightWatchTasks.nightlyTasks = refreshedNightWatchTasks.nightlyTasks
-                        self.nightWatchTasks.weeklyTasks = refreshedNightWatchTasks.weeklyTasks
-                        self.nightWatchTasks.monthlyTasks = refreshedNightWatchTasks.monthlyTasks
+                        resetAlertShowing = true
                     }
                 }
                 ToolbarItem (placement: .bottomBar) {
@@ -109,7 +107,14 @@ struct ContentView: View {
                 }
 
             }
-        }
+        }.alert(isPresented: $resetAlertShowing, content: {
+            Alert(title: Text("Reset List"), message: Text("Are you sure?"), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes, reset it"), action: {
+                let refreshedNightWatchTasks = NightWatchTasks()
+                self.nightWatchTasks.nightlyTasks = refreshedNightWatchTasks.nightlyTasks
+                self.nightWatchTasks.weeklyTasks = refreshedNightWatchTasks.weeklyTasks
+                self.nightWatchTasks.monthlyTasks = refreshedNightWatchTasks.monthlyTasks
+            }))
+        })
     }
 }
 
