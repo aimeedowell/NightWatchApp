@@ -33,6 +33,11 @@ struct ContentView: View {
                                     TaskRow(task: task)
                                 })
                         }
+                    }).onDelete(perform: {indexSet in
+                        nightWatchTasks.nightlyTasks.remove(atOffsets: indexSet)
+                    })
+                    .onMove(perform: {indices, newOffset in
+                        nightWatchTasks.nightlyTasks.move(fromOffsets: indices, toOffset: newOffset)
                     })
                 }
                 Section (header: TaskSectionHeader(symbolName: "sunset", headerText: "Weekly Tasks")) {
@@ -52,6 +57,12 @@ struct ContentView: View {
                                 })
                         }
                     })
+                        .onDelete(perform: {indexSet in
+                        nightWatchTasks.weeklyTasks.remove(atOffsets: indexSet)
+                    })
+                    .onMove(perform: {indices, newOffset in
+                        nightWatchTasks.weeklyTasks.move(fromOffsets: indices, toOffset: newOffset)
+                    })
                 }
                 Section (header: TaskSectionHeader(symbolName: "calendar", headerText: "Monthly Tasks")) {
                     let taskIndices = nightWatchTasks.nightlyTasks.indices
@@ -69,12 +80,21 @@ struct ContentView: View {
                                     TaskRow(task: task)
                                 })
                         }
+                    }).onDelete(perform: {indexSet in
+                        nightWatchTasks.monthlyTasks.remove(atOffsets: indexSet)
+                    })
+                    .onMove(perform: {indices, newOffset in
+                        nightWatchTasks.monthlyTasks.move(fromOffsets: indices, toOffset: newOffset)
                     })
                 }
             }
             .listStyle(GroupedListStyle())
             .navigationTitle("All Tasks")
             .toolbar {
+                ToolbarItem (placement: .navigationBarTrailing) {
+                    EditButton()
+                    
+                }
                 ToolbarItem (placement: .bottomBar) {
                     Toggle(isOn: $focusModeOn, label: {
                         Text("Focus Mode")
